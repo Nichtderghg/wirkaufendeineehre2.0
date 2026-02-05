@@ -1,0 +1,52 @@
+ <!DOCTYPE html>
+<html>
+<head>
+  <link rel="icon" type="image/jpeg" href="cat.jpg">
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(90deg,
+      #ff0000 0%,
+      #ff7f00 16.66%,
+      #ffff00 33.33%,
+      #00ff00 50%,
+      #0000ff 66.66%,
+      #4b0082 83.33%,
+      #8b00ff 100%);
+  }
+
+  h1 {
+    margin-top: 40vh;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+</style>
+<title>Robotik AG(by NDBGHG)</title>
+</head>
+<body>
+
+<h1>Robotik AG html</h1>
+<a href="./david-main.html">davids Homepage</a><br>
+<a href="./Links.html">Julius</a>
+<a href="https://wirkaufendeineehre.w3spaces.com/htmllernen.html">HTMl lernen</a>
+<br>
+<a href="https://wirkaufendeineehre.w3spaces.com/Rezept.html">Rezept</a>
+<p id="demo"></p>
+<a href="">Aktuell Ofline</a>
+<script>
+let text;
+if (Math.random() < 0.5) {
+  text = "<a href='https://tidal.com/@notbastistudios'>NDBGHG auf Tidal</a>";
+} else {
+  text = "<a href='https://scratch.mit.edu/users/Nichtderbastighg/'>NDBGHG auf Scratch</a>";
+}
+document.getElementById("demo").innerHTML = text;
+</script>
+<br>
+<form>
+<label for="name">Name</label><br>
+<input type="text" id="name" name="name">
+</form>
+</body>
+</html>
