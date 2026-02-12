@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<title>HTML Lernen</title>
+ <link rel="icon" type="image/jpeg" href="cat.jpg">
+ <style>
+body {
+    background-image: url('cat.jpg');
+    background-size: cover; /* This will make the image cover the entire background */
+}    .antwort {
+            color: blue;
+            cursor: pointer;
+        }
+</style>
+  <script>
+        function checkAnswer() {
+            const correct = document.getElementById("richtig");
+            const text = document.getElementById("geheimtext");
+
+            if (correct.checked) {
+                text.style.display = "block";
+            } else {
+                text.style.display = "none";
+                alert("Das ist leider falsch. Versuch es nochmal!");
+            }
+        }
+    </script>
+</head>
+<body>
+ <h1 style="color:purple;"> Html lernen</h1>
+ <p>Html ist gut, damit kann man viele Websites programmieren</p>
+ <p>Lass uns mal mit ein paar Grundlegenden Befehlen anfangen</p>
+    <table>
+<tr>
+    <th style="color:red;">Befehl</th>
+    <th style="color:green;">Auswirkung</th>
+</tr>
+<tr>
+<td>html</td>
+<td>Braucht man am Anfang eines Documents</td>
+</tr>
+<tr>
+<td>body</td>
+<td>Kommt meistens nach html und wird auch gebraucht</td>
+</tr><tr>
+<td>h1</td>
+<td>Ist eine Ueberschrift und kommt in body</td>
+</tr><tr>
+<td>p</td>
+<td>Mit diesem Befehl kann man normale Schrift machen (muss auch in body)</td>
+</tr><tr>
+<td>head</td>
+<td>Wird fuer alles nicht direkt sichtbare gebraucht</td>
+</tr><tr>
+<td>title</td>
+<td>Macht den Namen der Website oben</td>
+</tr>
+    </table>
+    <p>Wichtig ist: Alle Befehle mit < und > da es sonst nicht geht. Auserdem muss man am Ende des Textes z.B. NDBGHG ist cool wieder die Klammern und den Befehl machen aber mit / vor dem Befehl</p>
+<form>
+    <label class="antwort">
+        <input type="radio" name="frage" onclick="checkAnswer()"> html und h1
+    </label><br>
+
+    <label class="antwort">
+        <input type="radio" name="frage" id="richtig" onclick="checkAnswer()"> html, head und body
+    </label><br>
+
+    <label class="antwort">
+        <input type="radio" name="frage" onclick="checkAnswer()"> gar nichts
+    </label>
+</form>
+<p id="geheimtext" style="display:none; margin-top:20px; color:blue;">
+ Richtig! Jede HTML-Datei besteht aus <strong>html</strong>, <strong>head</strong> und <strong>body</strong>.
+</p>
+</body>
+</html>
