@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stuhl Stefan - Buchungssystem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .chair-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="time"],
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .price-info {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .price-info p {
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .price {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .error-message {
+            display: none;
+            background: #f44336;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .feature {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="chair-icon">🪑</div>
+            <h1>Stuhl Stefan</h1>
+            <p>Bequem online buchen</p>
+        </div>
+
+        <div id="successMessage" class="success-message">
+            ✓ Buchung erfolgreich! Wir melden uns bald bei dir.
+        </div>
+
+        <div id="errorMessage" class="error-message">
+            ✗ Bitte fülle alle Felder aus!
+        </div>
+
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Name *</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-Mail *</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Telefon *</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date">Datum *</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Uhrzeit *</label>
+                    <input type="time" id="time" name="time" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">Dauer (Stunden) *</label>
+                <select id="duration" name="duration" required>
+                    <option value="">-- Bitte wählen --</option>
+                    <option value="1">1 Stunde</option>
+                    <option value="2">2 Stunden</option>
+                    <option value="4">4 Stunden</option>
+                    <option value="8">8 Stunden (ganzer Tag)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Besondere Wünsche</label>
+                <input type="text" id="message" name="message" placeholder="z.B. Kissen, Besondere Position...">
+            </div>
+
+            <div class="price-info">
+                <p>Preis pro Stunde: <strong>15,00 €</strong></p>
+                <p id="totalPrice">Gesamtpreis: <span class="price">0,00 €</span></p>
+            </div>
+
+            <button type="submit" class="submit-btn">Jetzt buchen</button>
+        </form>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                <div>Sofort verfügbar</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📞</div>
+                <div>Kundenservice</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <div>Fair bepreist</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <div>Zuverlässig</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pricePerHour = 15.00;
+        const durationSelect = document.getElementById('duration');
+        const totalPriceSpan = document.querySelector('.price');
+        const bookingForm = document.getElementById('bookingForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Update price when duration changes
+        durationSelect.addEventListener('change', function() {
+            const duration = parseInt(this.value) || 0;
+            const totalPrice = duration * pricePerHour;
+            totalPriceSpan.textContent = totalPrice.toFixed(2) + ' €';
+        });
+
+        // Handle form submission
+        bookingForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Validate form
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            const duration = document.getElementById('duration').value;
+
+            if (!name || !email || !phone || !date || !time || !duration) {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+                return;
+            }
+
+            // Show success message
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+
+            // Log booking details (in real app, would send to server)
+            console.log({
+                name,
+                email,
+                phone,
+                date,
+                time,
+                duration: duration + ' Stunde(n)',
+                message: document.getElementById('message').value,
+                totalPrice: (duration * pricePerHour).toFixed(2) + ' €'
+            });
+
+            // Reset form
+            setTimeout(() => {
+                bookingForm.reset();
+                totalPriceSpan.textContent = '0,00 €';
+                successMessage.style.display = 'none';
+            }, 3000);
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').setAttribute('min', today);
+    </script>
+</body>
+</html>
