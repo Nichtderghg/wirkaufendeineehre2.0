@@ -198,8 +198,8 @@
             </div>
 
             <div class="form-group">
-                <label for="email">E-Mail *</label>
-                <input type="email" id="email" name="email" required>
+                <label for="email">E-Mail</label>
+                <input type="email" id="email" name="email">
             </div>
 
             <div class="form-group">
@@ -270,6 +270,7 @@
         const bookingForm = document.getElementById('bookingForm');
         const successMessage = document.getElementById('successMessage');
         const errorMessage = document.getElementById('errorMessage');
+        const submitBtn = document.querySelector('.submit-btn');
 
         // Update price when duration changes
         durationSelect.addEventListener('change', function() {
@@ -279,7 +280,7 @@
         });
 
         // Handle form submission
-        bookingForm.addEventListener('submit', function(e) {
+        bookingForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             // Validate form
@@ -289,9 +290,11 @@
             const date = document.getElementById('date').value;
             const time = document.getElementById('time').value;
             const duration = document.getElementById('duration').value;
+            const message = document.getElementById('message').value.trim();
 
-            if (!name || !email || !phone || !date || !time || !duration) {
+            if (!name || !phone || !date || !time || !duration) {
                 errorMessage.style.display = 'block';
+                errorMessage.textContent = '✗ Bitte fülle alle erforderlichen Felder aus!';
                 successMessage.style.display = 'none';
                 setTimeout(() => {
                     errorMessage.style.display = 'none';
@@ -299,28 +302,72 @@
                 return;
             }
 
-            // Show success message
-            successMessage.style.display = 'block';
-            errorMessage.style.display = 'none';
-
-            // Log booking details (in real app, would send to server)
-            console.log({
-                name,
-                email,
-                phone,
-                date,
-                time,
-                duration: duration + ' Stunde(n)',
-                message: document.getElementById('message').value,
-                totalPrice: (duration * pricePerHour).toFixed(2) + ' €'
-            });
-
-            // Reset form
-            setTimeout(() => {
-                bookingForm.reset();
-                totalPriceSpan.textContent = '0,00 €';
+            // Validate email format if provided
+            if (email && !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = '✗ Bitte gib eine gültige Email-Adresse ein!';
                 successMessage.style.display = 'none';
-            }, 3000);
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+                return;
+            }
+
+            // Disable submit button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ Buchung wird verarbeitet...';
+
+            try {
+                // Send booking to server
+                const response = await fetch('/api/book', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        email,
+                        phone,
+                        date,
+                        time,
+                        duration,
+                        message
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Show success message with booking ID
+                    const emailMessage = email ? '<br>Eine Bestätigungsmail wurde an deine Email gesendet.' : '';
+                    successMessage.innerHTML = `✓ Buchung erfolgreich! (ID: ${data.bookingId})${emailMessage}`;
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+
+                    // Reset form
+                    setTimeout(() => {
+                        bookingForm.reset();
+                        totalPriceSpan.textContent = '0,00 €';
+                        successMessage.style.display = 'none';
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'Jetzt buchen';
+                    }, 4000);
+                } else {
+                    throw new Error(data.error || 'Buchung fehlgeschlagen');
+                }
+            } catch (error) {
+                console.error('Fehler:', error);
+                errorMessage.innerHTML = `✗ ${error.message}`;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Jetzt buchen';
+
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
         });
 
         // Set minimum date to today
